@@ -1,5 +1,5 @@
 # A simple tictactoe game for practice 
-#import tkinter as tk
+
  
 import random
 
@@ -38,7 +38,6 @@ def checkWin(board,symbol1,symbol2):
          
     for element in winCombinations: 
         if board[element[0]] == board[element[1]] and board[element[1]] == board[element[2]]:  
-            print('THE WINNER IS ', symbol1)
             return True 
              
     if not any(False if (elt == symbol1 or elt== symbol2) else True for elt in board):  
@@ -89,7 +88,13 @@ def comTurn(board,symbol1,symbol2):
             boolean = checkWin(boardCp,symbol2,symbol1)  
             if boolean: 
                 board[idx] = symbol1
-                return board 
+                return board  
+                 
+
+    # if possible take the middle spot, makes it harder for player to win            
+    if board[4] == '4': 
+        board[4] = symbol1 
+        return board
                      
     # place edge 
     edges = [elt for elt in posCor if elt%2 == 1]
@@ -179,8 +184,12 @@ def main():
         if quit == False:      # need quit otherwise the second player or PC will get indefinite turns after player1 wins
             board = turn(p2,symbol2,symbol1,board) 
             displayBoard(board) 
-            quit = checkWin(board,symbol2,symbol1) 
-        
+            quit = checkWin(board,symbol2,symbol1)  
+            if quit: 
+                print('Player 2 ({symbol}) is the winner'.format(symbol  = symbol2)) 
+                
+        else: 
+            print("The Player ({symbol}) is the winner".format(symbol = symbol1))
  
         # work on the termination bug
         # player two turn  
